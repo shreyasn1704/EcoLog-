@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>ECL 331 ACS LAB - ECOLOG</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html, body {
+      height: 100%;
+      width: 100%;
+      font-family: 'Segoe UI', sans-serif;
+      background: url('circuit.png') no-repeat center center fixed;
+      background-size: cover;
+      background-color: #f9f9f9;
+    }
+
+    header {
+      display: flex;
+      align-items: center;
+      padding: 20px;
+      background-color: #ffffff;
+      border-bottom: 2px solid #ddd;
+    }
+
+    header img {
+      height: 80px;
+      margin-right: 20px;
+    }
+
+    .header-text {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .college-name {
+      font-size: 26px;
+      font-weight: bold;
+      color: black;
+    }
+
+    .dept-name, .lab-name {
+      font-size: 17px;
+      font-weight: bold;
+      color: #333;
+    }
+
+    .step-indicator-box {
+      background-color: black;
+      color: white;
+      border: none;
+      padding: 12px 20px;
+      font-size: 16px;
+      text-align: center;
+      width: 100%;
+      box-sizing: border-box;
+      margin-bottom: 20px;
+    }
+
+    .active-step {
+      color: white;
+      font-weight: bold;
+    }
+
+    main {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      align-items: center;
+      padding: 30px 20px;
+    }
+
+    .content {
+      width: 100%;
+      max-width: 800px;
+      background-color: white;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 0 25px rgba(0, 0, 0, 0.1);
+    }
+
+    .ecolog-title {
+      font-size: 26px;
+      font-weight: bold;
+      color: black;
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .section-box {
+      border: 1.5px solid #ccc;
+      padding: 20px;
+      margin-bottom: 25px;
+      border-radius: 10px;
+      background-color: #f9f9f9;
+    }
+
+    .section-box h3 {
+      margin-bottom: 15px;
+      color: #444;
+      font-size: 20px;
+    }
+
+    label {
+      display: flex;
+      align-items: center;
+      margin-bottom: 10px;
+      font-size: 16px;
+    }
+
+    input[type="checkbox"] {
+      margin-right: 10px;
+    }
+
+    input[type="text"] {
+      width: 100%;
+      padding: 10px;
+      font-size: 16px;
+      border: 1px solid #aaa;
+      border-radius: 6px;
+      margin-bottom: 15px;
+    }
+
+    input[type="submit"] {
+      background-color: black;
+      color: white;
+      border: none;
+      padding: 12px 20px;
+      font-size: 16px;
+      border-radius: 6px;
+      cursor: pointer;
+      width: 100%;
+    }
+
+    input[type="submit"]:hover {
+      background-color: grey;
+    }
+
+    footer {
+  font-size: 15px;
+  text-align: center;
+  color: white;
+  padding: 15px;
+  background: linear-gradient(to right, #110, grey);
+  border-top: 3px solid silver;
+  letter-spacing: 1px;
+  margin-top: 40px;
+  width: 100%
+}
+
+    #result {
+      margin-top: 30px;
+      font-size: 16px;
+      line-height: 1.6;
+    }
+.action-btn {
+  margin-top: 20px;
+  padding: 12px 20px;
+  background-color: #444;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 16px;
+  cursor: pointer;
+  width: 100%;
+  transition: background-color 0.3s ease;
+}
+
+.action-btn:hover {
+  background-color: grey;
+}
+
+  </style>
+</head>
+<body>
+
+  <header>
+    <img src="logo.png" alt="College Logo">
+    <div class="header-text">
+      <div class="college-name">Government Engineering College Kozhikode</div>
+      <div class="dept-name">Department of Applied Electronics and Instrumentation Engineering</div>
+      <div class="lab-name">ECL 331 - Analog Integrated Circuits and Simulation Lab</div>
+    </div>
+  </header>
+
+  <div class="step-indicator-box">
+    1. Student Info → <span class="active-step">2. Equipment</span>
+  </div>
+
+  <main>
+    <div class="content">
+
+      <!-- ✅ Student Info -->
+      <div id="student-info" style="margin-bottom: 30px; background: #D3D3D3; padding: 15px; border-radius: 10px;">
+        <h3>Student Info</h3>
+        <p><strong>Class:</strong> <span id="disp-class">S5 ECE</span></p>
+        <p><strong>Batch:</strong> <span id="disp-batchno"></span></p>
+        <p><strong>Name:</strong> <span id="disp-name"></span></p>
+        <p><strong>Roll No:</strong> <span id="disp-roll"></span></p>
+        <p><strong>Batch Year:</strong> <span id="disp-batch"></span></p>
+      </div>
+
+      <div class="ecolog-title">EcoLog - Equipment Logging System</div>
+
+      <form>
+        <!-- Experiments -->
+        <div class="section-box">
+          <h3>Hardware Experiments</h3>
+          <label><input type="checkbox" class="hardware-experiment" value="1.FAMILIARIZATION OF OPERATIONAL AMPLIFIER"> 1.FAMILIARIZATION OF OPERATIONAL AMPLIFIER</label>
+          <label><input type="checkbox" class="hardware-experiment" value="2.MEASUREMENT OF OPERATIONAL AMPLIFIER PARAMETERS"> 2.MEASUREMENT OF OPERATIONAL AMPLIFIER PARAMETERS</label>
+          <label><input type="checkbox" class="hardware-experiment" value="3.SCHMITT TRIGGER USING 741 IC"> 3.SCHMITT TRIGGER USING 741 IC</label>
+          <label><input type="checkbox" class="hardware-experiment" value="4.ASTABLE AND MONOSTABLE MULTIVIBRATORS USING 741 IC"> 4.ASTABLE AND MONOSTABLE MULTIVIBRATORS USING 741 IC</label>
+          <label><input type="checkbox" class="hardware-experiment" value="5.TRIANGULAR WAVE AND SAWTOOTH WAVE GENERATORS USING 741 IC "> 5.TRIANGULAR WAVE AND SAWTOOTH WAVE GENERATORS USING 741 IC </label>
+          <label><input type="checkbox" class="hardware-experiment" value="6.RC PHASE SHIFT OSCILLATOR USING 741 IC"> 6.RC PHASE SHIFT OSCILLATOR USING 741 IC</label>
+          <label><input type="checkbox" class="hardware-experiment" value="7.ASTABLE AND MONOSTABLE MULTIVIBRATORS USING 555 TIMER IC"> 7.ASTABLE AND MONOSTABLE MULTIVIBRATORS USING 555 TIMER IC</label>
+          <label><input type="checkbox" class="hardware-experiment" value="8.VOLTAGE REGULATOR USING 723 IC"> 8.VOLTAGE REGULATOR USING 723 IC</label>
+          <h3>Simulation</h3>
+          <label><input type="checkbox" class="simulation-experiment" value="1.MULTIVIBRATORS USING 741 IC AND TIMER IC"> 1.MULTIVIBRATORS USING 741 IC AND TIMER IC</label>
+          <label><input type="checkbox" class="simulation-experiment" value="2.RC PHASE SHIFT OSCILLATOR USING 741 IC"> 2.RC PHASE SHIFT OSCILLATOR USING 741 IC</label>
+          <label><input type="checkbox" class="simulation-experiment" value="3.TRIANGULAR WAVE AND SAWTOOTH WAVE GENERATORS USING 741 IC"> 3.TRIANGULAR WAVE AND SAWTOOTH WAVE GENERATORS USING 741 IC</label>
+        </div>
+
+        <!-- Passive Components -->
+        <div class="section-box">
+          <h3>Passive Components</h3>
+          <label>Resistors (e.g., 1K, 10K):</label>
+          <input type="text" placeholder="Enter value of resistors">
+          <label>Capacitors (e.g., 0.1μF):</label>
+          <input type="text" placeholder="Enter value of capacitors">
+          <label>Potentiometers/ Variable Resistors (e.g., 4.7k):</label>
+          <input type="text" placeholder="Enter value of potentiometer">
+        </div>
+
+        <!-- Active Components -->
+        <div class="section-box">
+          <h3>Active Components</h3>
+          <label><input type="checkbox" value="Op-amp IC: 741IC">Op-amp IC: 741IC</label>
+          <label><input type="checkbox" value="Voltage Regulator: 723IC"> Voltage Regulator:723IC</label>
+          <label><input type="checkbox" value="555 Timer IC"> 555 Timer IC</label>
+          <label><input type="checkbox" value="Transistors"> Transistors</label>
+          <label><input type="checkbox" value="Diodes"> Diodes</label>
+        </div>
+
+        <!-- Instruments -->
+        <div class="section-box">
+          <h3>Instruments</h3>
+          <label><input type="checkbox" value="DC Source"> DC Source</label>
+          <label><input type="checkbox" value="Digital Storage Oscilloscope(DSO)"> Digital Storage Oscilloscope(DSO)</label>
+          <label><input type="checkbox" value="Connecting Probes"> Connecting Probes</label>
+          <label><input type="checkbox" value="Function Generator"> Function Generator</label>
+          <label><input type="checkbox" value="Multimeter"> Multimeter</label>
+          <label><input type="checkbox" value="Laptop"> Laptop</label>
+          <label><input type="checkbox" value="Mouse"> Mouse</label>
+        </div>
+       
+
+        <!-- Other Essentials -->
+        <div class="section-box">
+          <h3>Other Essentials</h3>
+          <label><input type="checkbox" value="Breadboard"> Breadboard</label>
+          <label><input type="checkbox" value="Connecting Wires"> Connecting Wires</label>
+          <input type="submit" value="Confirm Selection">
+        </div>
+      </form>
+
+      <div id="summary" style="margin-top: 40px; font-size: 16px;"></div>
+
+      <button onclick="resetAndGoBack()" class="action-btn">New Entry</button>
+
+      
+      <div id="result"></div>
+
+    </div>
+  </main>
+
+  <footer>
+    Developed by ECE-CS | GEC Kozhikode
+  </footer>
+
+  <script>
+    document.querySelector("form").addEventListener("submit", function (e) {
+     
+      e.preventDefault();
+
+      const roll = localStorage.getItem("roll_no") || "N/A";
+      const name = localStorage.getItem("studentName") || "N/A";
+
+
+      let resistor = document.querySelector('input[placeholder*="resistor"]').value || "None";
+      let capacitor = document.querySelector('input[placeholder*="capacitor"]').value || "None";
+      let potentiometer = document.querySelector('input[placeholder*="potentiometer"]').value || "None";
+      
+      let checkedHardwareExperiments = document.querySelectorAll('input.hardware-experiment:checked');
+      let selectedHardwareExperiments = [];
+      checkedHardwareExperiments.forEach(function(item){
+          selectedHardwareExperiments.push(item.value);
+         });
+      let checkedSimulationExperiments = document.querySelectorAll('input.simulation-experiment:checked');
+      let selectedSimulationExperiments = [];
+      checkedSimulationExperiments.forEach(function(item){
+          selectedSimulationExperiments.push(item.value);
+         });
+
+
+      let checked = document.querySelectorAll('input[type="checkbox"]:checked:not(.hardware-experiment):not(.simulation-experiment)');
+      let selectedItems = [];
+      checked.forEach(function (item) {
+        selectedItems.push(item.value);
+      });
+
+      let timestamp = new Date().toLocaleString();
+
+      // Create summary
+      let summaryHTML = `
+        <h3>Final Summary</h3>
+        <p><strong>Roll No:</strong> ${roll}</p>
+	<p><strong>Name:</strong> ${name}</p>
+        <p><strong>Resistors:</strong> ${resistor}</p>
+        <p><strong>Capacitors:</strong> ${capacitor}</p>
+        <p><strong>Potentiometer:</strong> ${potentiometer}</p>
+        <p><strong>Hardware Experiments:</strong></p>
+	<ul>${selectedHardwareExperiments.map(item => `<li>${item}</li>`).join('')}</ul>
+
+	<p><strong>Simulation Experiments:</strong></p>
+	<ul>${selectedSimulationExperiments.map(item => `<li>${item}</li>`).join('')}</ul>
+
+        <p><strong>Other Components:</strong></p>
+        <ul>${selectedItems.map(item => `<li>${item}</li>`).join('')}</ul>
+        <p><strong>Time of Submission:</strong> ${timestamp}</p>
+       <button onclick="finalSubmit()" class="action-btn">Confirm & Submit</button>
+
+      `;
+
+      document.getElementById("summary").innerHTML = summaryHTML;
+    });
+
+    function finalSubmit() {
+      const name = localStorage.getItem("studentName") || "N/A";
+      const batch = localStorage.getItem("studentBatch") || "N/A";
+      const roll = parseInt(localStorage.getItem("roll_no") || "0");
+      const batchNo = localStorage.getItem("batchNo") || (roll <= 37 ? "Batch 1" : "Batch 2");
+
+      const resistor = document.querySelector('input[placeholder*="resistor"]').value || "None";
+      const capacitor = document.querySelector('input[placeholder*="capacitor"]').value || "None";
+      const potentiometer = document.querySelector('input[placeholder*="potentiometer"]').value || "None";
+
+      const checkedHardwareExperiments = document.querySelectorAll('input.hardware-experiment:checked');
+      let selectedHardwareExperiments = [];
+      checkedHardwareExperiments.forEach(item => selectedHardwareExperiments.push(item.value));
+
+      const checkedSimulationExperiments = document.querySelectorAll('input.simulation-experiment:checked');
+      let selectedSimulationExperiments = [];
+      checkedSimulationExperiments.forEach(item => selectedSimulationExperiments.push(item.value));
+
+      const checkedOther = document.querySelectorAll('input[type="checkbox"]:checked:not(.hardware-experiment):not(.simulation-experiment)');
+      let selectedItems = [];
+      checkedOther.forEach(item => selectedItems.push(item.value));
+     
+
+      const checkIn = new Date().toLocaleTimeString(); // Example: 14:45:30
+
+
+
+      const record = {
+        name: name,
+        roll: roll,
+        batch: batch,
+        batchNo: batchNo,
+        resistors: resistor,
+        capacitors: capacitor,
+        potentiometer: potentiometer,
+    	hardwareExperiments: selectedHardwareExperiments,
+    	simulationExperiments: selectedSimulationExperiments,
+    	otherComponents: selectedItems,
+        components: selectedItems,
+        checkIn: checkIn,
+        checkOut: null
+      };
+
+      const storageKey = `ecologData_${batchNo.replace(" ", "")}`;
+      let batchData = JSON.parse(localStorage.getItem(storageKey)) || [];
+      batchData.push(record);
+      localStorage.setItem(storageKey, JSON.stringify(batchData));
+
+      alert("Check-in successful!");
+    }
+
+    window.addEventListener("DOMContentLoaded", function () {
+      document.getElementById("disp-class").innerText = "S5 ECE";
+      document.getElementById("disp-name").innerText = localStorage.getItem("studentName") || "N/A";
+      document.getElementById("disp-batch").innerText = localStorage.getItem("studentBatch") || "N/A";
+      document.getElementById("disp-roll").innerText = localStorage.getItem("roll_no") || "N/A";
+      document.getElementById("disp-batchno").innerText = localStorage.getItem("batchNo") || "N/A";
+    });
+
+    function resetAndGoBack() {
+      localStorage.removeItem("studentName");
+      localStorage.removeItem("studentBatch");
+      localStorage.removeItem("roll_no");
+      localStorage.removeItem("batchNo");
+
+      window.location.href = "index.html";
+    }
+  </script>
+</body>
+</html>
+

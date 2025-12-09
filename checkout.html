@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>ECL 331 ACS LAB - ECOLOG</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html, body {
+      height: 100%;
+      width: 100%;
+      font-family: 'Segoe UI', sans-serif;
+      background: url('circuit.png') no-repeat center center fixed;
+      background-size: cover;
+      background-color: #f9f9f9;
+    }
+
+    header {
+      display: flex;
+      align-items: center;
+      padding: 20px;
+      background-color: #ffffff;
+      border-bottom: 2px solid #ddd;
+    }
+
+    header img {
+      height: 80px;
+      margin-right: 20px;
+    }
+
+    .header-text {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .college-name {
+      font-size: 26px;
+      font-weight: bold;
+      color: black;
+    }
+
+    .dept-name, .lab-name {
+      font-size: 17px;
+      font-weight: bold;
+      color: #333;
+    }
+
+    main {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      align-items: center;
+      padding: 40px 20px;
+    }
+
+    .content {
+      width: 100%;
+      max-width: 500px;
+      background-color: white;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 0 25px rgba(0, 0, 0, 0.1);
+    }
+
+    h1 {
+      color: #333;
+      margin-bottom: 20px;
+      text-align: center;
+    }
+
+    form label {
+      display: block;
+      margin-bottom: 10px;
+      font-size: 16px;
+    }
+
+    input[type="number"] {
+      width: 100%;
+      padding: 12px;
+      margin-bottom: 20px;
+      border: 1px solid #aaa;
+      border-radius: 6px;
+      font-size: 16px;
+    }
+
+    button {
+      background-color: black;
+      color: white;
+      border: none;
+      padding: 12px 20px;
+      font-size: 16px;
+      border-radius: 6px;
+      cursor: pointer;
+      width: 100%;
+      margin-top: 10px;
+    }
+
+    button:hover {
+      background-color: grey;
+    }
+.btn {
+  background-color: #444;
+  color: white;
+  border: none;
+  padding: 12px 1px;
+  font-size: 16px;
+  border-radius: 10px;
+  cursor: pointer;
+  width: 100%;
+  margin-top: 40px;
+}
+
+.btn:hover {
+  background-color: grey;
+}
+
+
+    .message {
+      font-size: 16px;
+      color: green;
+      margin-top: 20px;
+      text-align: center;
+    }
+
+    footer {
+  font-size: 15px;
+  text-align: center;
+  color: white;
+  padding: 15px;
+  background: linear-gradient(to right, #110, grey);
+  border-top: 3px solid silver;
+  letter-spacing: 1px;
+  margin-top: 40px;
+  width: 100%
+}
+
+  </style>
+</head>
+<body>
+  <header>
+    <img src="logo.png" alt="College Logo">
+    <div class="header-text">
+      <div class="college-name">Government Engineering College Kozhikode</div>
+      <div class="dept-name">Department of Applied Electronics and Instrumentation Engineering</div>
+      <div class="lab-name">ECL 331 - Analog Integrated Circuits and Simulation Lab</div>
+    </div>
+  </header>
+
+  <main>
+    <div class="content">
+      <h1>EcoLog - Equipment Checkout</h1>
+
+      <form id="checkout-form">
+        <label for="checkout-roll">Enter Roll Number to Check-Out:</label>
+        <input type="number" id="checkout-roll"  required>
+        <button type="submit">Check-Out</button>
+      </form>
+
+      <button class="btn" onclick="goToCheckIn()">Return to Check-in</button>
+
+
+      <div class="message" id="checkout-msg"></div>
+
+      <button onclick="downloadCSV()">Download CSV for Today's Batch</button>
+    </div>
+  </main>
+
+  <footer>
+    Developed by ECE-CS | GEC Kozhikode
+  </footer>
+
+  <script>
+    function goToCheckIn() {
+      window.location.href = "index.html";
+    }
+
+    document.getElementById("checkout-form").addEventListener("submit", function(e) {
+      e.preventDefault();
+
+      const rollno = parseInt(document.getElementById("checkout-roll").value.trim());
+      if (!rollno || rollno < 1 || rollno > 74) {
+        alert("Please enter a valid roll number between 1 and 74.");
+        return;
+      }
+
+      const batchKey = rollno <= 37 ? "Batch1" : "Batch2";
+      const storageKey = `ecologData_${batchKey}`;
+      let data = JSON.parse(localStorage.getItem(storageKey)) || [];
+
+      let found = false;
+      for (let entry of data) {
+        if (parseInt(entry.roll) === rollno) {
+          found = true;
+          if (entry.checkOut) {
+            document.getElementById("checkout-msg").innerText = `Already checked out at: ${entry.checkOut}`;
+          } else {
+            entry.checkOut = new Date().toLocaleTimeString(); // Example: 14:46:16
+
+
+            localStorage.setItem(storageKey, JSON.stringify(data));
+            document.getElementById("checkout-msg").innerText = `Successfully checked out at: ${entry.checkOut}`;
+          }
+          break;
+        }
+      }
+
+      if (!found) {
+        document.getElementById("checkout-msg").innerText = "No check-in record found for this roll number.";
+      }
+    });
+function formatDateTime(raw) {
+  if (!raw) return "N/A";
+  const d = new Date(raw);
+  if (isNaN(d)) return raw;
+  const date = d.toLocaleDateString("en-GB"); // DD-MM-YYYY
+  const time = d.toLocaleTimeString("en-GB"); // HH:MM:SS
+  return `${date}, ${time}`;
+}
+  
+function downloadCSV() {
+  const allBatches = ["Batch1", "Batch2"];
+  const today = new Date().toLocaleDateString("en-GB").replace(/\//g, "-");
+
+  allBatches.forEach(batchKey => {
+    const storageKey = `ecologData_${batchKey}`;
+    const data = JSON.parse(localStorage.getItem(storageKey)) || [];
+
+    if (data.length === 0) return; // skip if no data
+
+    const rows = [["Name", "Roll No", "Batch", "Batch No", "Resistors", "Capacitors", "Potentiometer", "Hardware Experiments", "Simulation Experiments", "Components", "Check-In Time", "Check-Out Time"]];
+
+
+    data.forEach(entry => {
+      // Wrap values that may contain commas in double quotes
+      const resistors = entry.resistors.includes(",") ? `"${entry.resistors}"` : entry.resistors;
+      const capacitors = entry.capacitors.includes(",") ? `"${entry.capacitors}"` : entry.capacitors;
+      const potentiometer = entry.potentiometer ? `"${entry.potentiometer}"` : "N/A";
+      const hardwareExps = entry.hardwareExperiments ? `"${entry.hardwareExperiments.join("; ")}"` : "N/A";
+      const simulationExps = entry.simulationExperiments ? `"${entry.simulationExperiments.join("; ")}"` : "N/A";
+      const components = entry.components.length ? `"${entry.components.join("; ")}"` : "N/A";
+
+      rows.push([
+        entry.name,
+    	entry.roll,
+    	entry.batch,
+   	entry.batchNo,
+    	resistors,
+    	capacitors,
+    	potentiometer,
+    	hardwareExps,
+    	simulationExps,
+    	components,
+        entry.checkIn || "N/A",
+        entry.checkOut || "N/A"
+      ]);
+    });
+
+    const csvContent = rows.map(row => row.join(",")).join("\n");
+    const filename = `S5_ECE_${batchKey}_${today}.csv`;
+
+    // Trigger CSV download
+    const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.setAttribute("href", url);
+    a.setAttribute("download", filename);
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+
+    // Auto-delete from localStorage
+    localStorage.removeItem(storageKey);
+  });
+
+  alert("CSV downloaded and lab data cleared successfully !");
+}
+
+
+
+  </script>
+</body>
+</html>
+
+
+

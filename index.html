@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>ECL 331 ACS LAB - ECOLOG</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html, body {
+      height: 100%;
+      width: 100%;
+      font-family: 'Segoe UI', sans-serif;
+      background: url('circuit.png') no-repeat center center fixed;
+      background-size: cover;
+      background-color: #f9f9f9;
+    }
+
+    body {
+      display: flex;
+      flex-direction: column;
+    }
+body {
+  background: url('bg.jpg'); /* use your circuit bg */
+  background-size: cover;
+  background-attachment: fixed;
+  margin: 0;
+  font-family: "Poppins", sans-serif;
+}
+
+
+    header {
+      display: flex;
+      align-items: center;
+      padding: 20px;
+      background-color: #ffffff;
+      border-bottom: 2px solid #ddd;
+    }
+
+    header img {
+      height: 80px;
+      margin-right: 20px;
+    }
+
+    .header-text {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .college-name {
+      font-size: 26px;
+      font-weight: bold;
+      color: black;
+    }
+
+    .dept-name, .lab-name {
+      font-size: 17px;
+      font-weight: bold;
+      color: #333;
+    }
+
+    .step-indicator-box {
+      background-color: black;
+      color: white;
+      padding: 12px 20px;
+      font-size: 16px;
+      text-align: center;
+      width: 100%;
+      box-sizing: border-box;
+      margin-bottom: 20px;
+    }
+
+    .active-step {
+      color: white;
+      font-weight: bold;
+    }
+
+    main {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+    }
+
+    .ecolog-title {
+      font-size: 28px;
+      font-weight: bold;
+      color: black;
+      margin-bottom: 40px;
+    }
+
+    form {
+      width: 100%;
+      max-width: 400px;
+      background-color: white;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 0 25px rgba(0, 0, 0, 0.1);
+    }
+
+    label {
+      font-size: 16px;
+      margin-bottom: 10px;
+      display: block;
+    }
+
+    input[type="number"] {
+      width: 100%;
+      padding: 12px;
+      font-size: 16px;
+      border: 1px solid #aaa;
+      border-radius: 6px;
+      margin-bottom: 20px;
+    }
+
+    button {
+      background-color: black;
+      color: white;
+      border: none;
+      padding: 12px 20px;
+      font-size: 16px;
+      border-radius: 6px;
+      cursor: pointer;
+      width: 100%;
+    }
+
+    button:hover {
+      background-color: grey;
+    }
+
+
+
+  .checkout-btn {
+  background-color: #444;
+  color: white;
+  border: none;
+  padding: 12px 1px;
+  font-size: 16px;
+  border-radius: 10px;
+  cursor: pointer;
+  width: 25%;
+  margin-top: 40px;
+}
+
+.checkout-btn:hover {
+  background-color: grey;
+}
+
+footer {
+  font-size: 15px;
+  text-align: center;
+  color: white;
+  padding: 15px;
+  background: linear-gradient(to right, #110, grey);
+  border-top: 3px solid silver;
+  letter-spacing: 1px;
+  margin-top: 40px;
+  width: 100%
+}
+
+  </style>
+</head>
+<body>
+
+  <header>
+    <img src="logo.png" alt="College Logo">
+    <div class="header-text">
+      <div class="college-name">Government Engineering College Kozhikode</div>
+      <div class="dept-name">Department of Applied Electronics and Instrumentation Engineering</div>
+      <div class="lab-name">ECL 331 - Analog Integrated Circuits and Simulation Lab</div>
+    </div>
+  </header>
+
+  <div class="step-indicator-box">
+    <span class="active-step">1. Student Info</span> → 2. Equipment
+  </div>
+
+  <main>
+    <div class="ecolog-title">EcoLog - Equipment Logging System</div>
+
+    <form onsubmit="return saveRollNo()">
+      <label for="rollno">Enter Your Roll Number:</label>
+      <input type="number" id="rollno" name="rollno" >
+      <button type="submit">Proceed</button>
+    </form>
+
+    <div style="display:flex; flex-direction:column; align-items:center; width:100%; margin-top:20px;">
+
+  <button class="checkout-btn" onclick="goToCheckout()">Go to Checkout</button>
+
+  <button class="checkout-btn" onclick="openManual()" style="margin-top:12px;">
+     Open Lab Manual
+  </button>
+
+</div>
+
+<script>
+function openManual(){
+  window.open("LAB_MANUAL.pdf"); 
+}
+</script>
+<script>
+  function openManual(){
+    window.open("LAB_MANUAL.pdf"); 
+  }
+</script>
+
+
+
+  <footer>
+    Developed by ECE-CS | GEC Kozhikode
+  </footer>
+
+  <script src="studentDB.js"></script>
+
+  <script>
+    function saveRollNo() {
+      const rollno = document.getElementById("rollno").value.trim();
+
+      if (rollno === "") {
+        alert("Please enter your roll number.");
+        return false;
+      }
+
+      const studentInfo = studentDB[rollno];
+      if (!studentInfo) {
+        alert("Roll number not found in database!");
+        return false;
+      }
+
+      // Save to localStorage
+      localStorage.setItem("roll_no", rollno);
+      localStorage.setItem("studentName", studentInfo.name);
+      localStorage.setItem("studentBatch", studentInfo.batch);
+      localStorage.setItem("batchNo", studentInfo.batchNo);
+
+      window.location.href = "equipment.html";
+      return false;
+    }
+
+    function goToCheckout() {
+      window.location.href = "checkout.html";
+    }
+  </script>
+
+</body>
+</html>
