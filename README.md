@@ -41,18 +41,22 @@ A simulation-based embedded password lock system developed using **PIC16F877A**,
 ## Site Preview
 
 Student opens index.html :
-![Before turning on](Screenshot_before_on_1.png)
 
-Redirected to equipment.html.:
-![Access Granted](Screenshot_access_granted.png)  
+![index.html ](Screenshot_checkin.png)
+
+Redirected to equipment.html :
+
+![equipment.html](Screenshot_equipment.png)  
 
 For check-out, student goes to checkout.html : 
+
+![checkout.html](Screenshot_checkout.png) 
 
 ---
 
 ## 🎥 Simulation Video
 
-[📺 Watch the EcoLog video](<https://drive.google.com/file/d/1rLBct0EhoUBXl7SiQaQ-xzD3Z8qEhbHd/view?usp=sharing>)
+[📺 Watch the EcoLog video](<https://drive.google.com/file/d/1hWyIHzYPpkhUtfKRcJ5tWrwfbkv2fItj/view?usp=sharing>)
 
 ---
 
