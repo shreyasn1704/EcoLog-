@@ -1,7 +1,6 @@
 # EcoLog☘️🖥️
  EcoLog is a web-based lab management system developed for the Analog Integrated Circuits and Simulation Lab (ECL 331) at GEC Kozhikode. 
- 
-A simulation-based embedded password lock system developed using **PIC16F877A**, designed and tested on **Proteus** as part of my internship at **Keltron Knowledge Centre, Kozhikode**.
+
 
 ---
 
@@ -19,8 +18,6 @@ A simulation-based embedded password lock system developed using **PIC16F877A**,
 ## Platform
 
 - Web-based application running in any modern browser (Chrome, Edge, Firefox)  
-- **MPLAB IDE (Embedded C)**  
-- **Proteus 8.9** (Simulation only)
 
 ## Data Storage
 - Uses localStorage in the browser for temporary batch data
